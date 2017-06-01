@@ -1,6 +1,6 @@
 # Мощная библиотека Redux-Form
 
- Хотелось бы начать, вот с такого ньюанса. Существуют такие разработчики, которые по недостаточности практики в работе или потому, что их задачи не подходили к выбранному им инструменту или библиотеке, пытаются навязать свое мнение, не использовать  соответствующие инструменты или библиотеки. Вот с таким я столкнулся, когда для работы над проектом выбрал `Redux-React`. Но как оказывается нужно больше читать положительных отзывов о работе и о том что получалось у тех разработчиков, которые попробовали и выполнили поставленные перед ними задачи.
+Хотелось бы начать, вот с такого ньюанса. Существуют такие разработчики, которые по недостаточности практики в работе или потому, что их задачи не подходили к выбранному им инструменту или библиотеке, пытаются навязать свое мнение, не использовать  соответствующие инструменты или библиотеки. Вот с таким я столкнулся, когда для работы над проектом выбрал `Redux-React`. Но как оказывается нужно больше читать положительных отзывов о работе и о том что получалось у тех разработчиков, которые попробовали и выполнили поставленные перед ними задачи.
 
 # Поехали
 
@@ -23,29 +23,32 @@ render() {
   const {reducerCounter: {parent, children, total}} = this.props
 
   return (
-	 <div>
-	   <div><strong>parents</strong></div>
-		 { (parent > 1) &&
-		   <button onClick={this.decrement.bind(this, 'parent')}>-</button>
-		 }
-		<span>
-		  {parent}
-		</span>
-		{ (parent < 9) &&
-		  <button onClick={this.increment.bind(this, 'parent')}>+</button>
-		}
-		<div><strong>childrens</strong></div>
-		{ (children > 0) &&
-		  <button onClick={this.decrement.bind(this, 'children')}>-</button>
-		}
-		<span>
-		  {children}
-		</span>
-		{ (parent > children) &&
-		  <button onClick={this.increment.bind(this, 'children')}>+</button>
-		}
-		<p>total: {total}</p>
-	 </div>
+    <div>
+      <div><strong>parents</strong></div>
+      { (parent > 1) &&
+        <button onClick={this.decrement.bind(this, 'parent')}>-</button>
+      }
+      <span>
+        {parent}
+      </span>
+
+      { (parent < 9) &&
+        <button onClick={this.increment.bind(this, 'parent')}>+</button>
+      }
+      <div><strong>childrens</strong></div>
+      { (children > 0) &&
+        <button onClick={this.decrement.bind(this, 'children')}>-</button>
+      }
+
+      <span>
+        {children}
+      </span>
+
+      { (parent > children) &&
+        <button onClick={this.increment.bind(this, 'children')}>+</button>
+      }
+      <p>total: {total}</p>
+    </div>
   )
 }
 ```
@@ -54,8 +57,8 @@ render() {
 ```javascript
 export function increment(type) {
   return {
-	type: 'Increment',
-	amount: type
+    type: 'Increment',
+    amount: type
   }
 }
 ```
@@ -68,17 +71,17 @@ export function reducerCounter(state=initialState, action) {
   if (type === 'parent') typeObj = state.parent;
   if (type === 'children') typeObj = state.children;
   switch (action.type) {
-	case 'Increment':
-	  state[type] = typeObj + 1
-	  state.total += 1
-	  return {...state};
-	case 'Decrement':
-	  state[type] = typeObj - 1
-	  state.total -= 1
-	  return {...state};
-	default:
-	  return state;
-	}
+    case 'Increment':
+      state[type] = typeObj + 1
+      state.total += 1
+      return {...state};
+    case 'Decrement':
+      state[type] = typeObj - 1
+      state.total -= 1
+      return {...state};
+    default:
+      return state;
+    }
 }
 ```
 #### Выводы:
@@ -95,18 +98,19 @@ export function reducerCounter(state=initialState, action) {
   const {parent, total} = this.props
 
   return (
-  	<div>
-	  <Field
-		name="parent"
-		component={Counter}
-	  />
-	  <Field
-	    name="children"
-	    component={Counter}
-	    parent={parent}
-	  />
+    <div>
+      <Field
+        name="parent"
+        component={Counter}
+      />
 
-	  <p>Total: {total}</p>
+      <Field
+        name="children"
+        component={Counter}
+        parent={parent}
+      />
+
+      <p>Total: {total}</p>
     </div>
   )
 }
@@ -117,29 +121,29 @@ export function reducerCounter(state=initialState, action) {
 class Counter extends Component {
   render() {
     const {input: { value, name }, parent} = this.props;
-		
+    
     return (
-	  <div>
-		<div><strong>{name}</strong></div>
-		{ ((name === 'parent' && value > 1) || (name !== 'parent' && value !== 0)) &&
-		  <button onClick={this.decrement}>-</button>
-		}
-		<span>
-		  {value}
-		</span>
-		{ ((name === 'children' && value < parent) || (name !== 'children' && value !== 9)) &&
-		  <button onClick={this.increment}>+</button>
-		}
-	  </div>
+      <div>
+        <div><strong>{name}</strong></div>
+        { ((name === 'parent' && value > 1) || (name !== 'parent' && value !== 0)) &&
+          <button onClick={this.decrement}>-</button>
+        }
+        <span>
+          {value}
+        </span>
+        { ((name === 'children' && value < parent) || (name !== 'children' && value !== 9)) &&
+          <button onClick={this.increment}>+</button>
+        }
+      </div>
     )
   }
 
   increment = () => {
-	this.props.input.onChange(this.props.input.value + 1)
+    this.props.input.onChange(this.props.input.value + 1)
   }
 
   decrement = () => {
-	this.props.input.onChange(this.props.input.value - 1)
+    this.props.input.onChange(this.props.input.value - 1)
   }
 }
 ```
@@ -149,12 +153,12 @@ class Counter extends Component {
 form: formReducer.plugin({
   counters: (state, action) => {
     switch(action.type) {
-	  case '@@redux-form/CHANGE':
-	    const {parent, children, infant} = state.values
-	    state.values.total = parent + children + infant
-	    return { ...state}
-	  default:
-	    return state
+    case '@@redux-form/CHANGE':
+      const {parent, children, infant} = state.values
+      state.values.total = parent + children + infant
+      return { ...state}
+    default:
+      return state
     }
   }
 })
@@ -169,8 +173,8 @@ const mapStateToProps = (state) => {
   const total = selector(state, 'total')
 
   return {
-	 parent,
-	 total
+    parent,
+    total
   }
 }
 ```
